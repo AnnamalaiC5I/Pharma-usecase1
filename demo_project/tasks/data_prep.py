@@ -123,7 +123,7 @@ class DataPrep(Task):
                 'Diabetes_Yes, but female told only during pregnancy':'Diabetes_Yes_but_female_told_only_during_pregnancy'}, inplace = True)
 
 
-                spark.sql(f"CREATE DATABASE IF NOT EXISTS {self.conf['feature-store']['table_name']}")
+                spark.sql(f"CREATE DATABASE IF NOT EXISTS {self.conf['feature-store'][current_branch]['table_name']}")
                 # Create a unique table name for each run. This prevents errors if you run the notebook multiple times.
                 table_name = self.conf['feature-store'][current_branch]['table_name']
                 print(table_name)
