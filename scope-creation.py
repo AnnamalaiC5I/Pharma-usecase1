@@ -6,6 +6,8 @@ from demo_project.tasks.branch_detection import get_current_git_branch
 
 current_branch = get_current_git_branch()
 
+print(current_branch)
+
 host_url = os.environ.get('DATABRICKS_HOST')
 host_token = os.environ.get('DATABRICKS_TOKEN')
 c5_access  = os.environ.get('AWS_ACCESS_KEY')
