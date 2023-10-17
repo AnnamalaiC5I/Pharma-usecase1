@@ -2,11 +2,20 @@ import os
 import requests
 import json
 import subprocess
-from demo_project.tasks.branch_detection import get_current_git_branch
+
+
+def get_current_git_branch():
+    try:
+        result = subprocess.run(['git', 'branch', '--show-current'], stdout=subprocess.PIPE, text=True, check=True)
+        current_branch = result.stdout.strip()
+        return current_branch
+    except subprocess.CalledProcessError:
+       
+        return None
 
 current_branch = get_current_git_branch()
 
-print(current_branch)
+print("The current branch is: ",current_branch)
 
 host_url = os.environ.get('DATABRICKS_HOST')
 host_token = os.environ.get('DATABRICKS_TOKEN')
