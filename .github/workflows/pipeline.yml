@@ -81,13 +81,62 @@ jobs:
           AWS_ACCESS_KEY: ${{ secrets.C5I_ACCESS_KEY }}
           AWS_SECRET_KEY: ${{ secrets.C5I_SECRET_KEY }}
       steps:
-          - name: Checkout Repository
-            uses: actions/checkout@v2
+        - name: Checkout Repository
+          uses: actions/checkout@v2
+
+        - name: Set up Python 3.9
+          uses: actions/setup-python@v4
+          with:
+            python-version: '3.9'
+            cache: 'pip' 
+            cache-dependency-path: setup.py
+
+        - name: Install pip
+          run: |
+            python -m pip install --upgrade pip
+
+        - name: Install dependencies and project in dev mode
+          run: |
+            pip install -e ".[local,test]"
+            pip install evidently
+
+        - name: Scope Creation Check
+          run: |
+            python scope-creation.py
+
+        - name: Workflow Data-preprocessing deployment (assets only upload)
+          run: |
+            dbx deploy Data-preprocessing --assets-only 
+
+        - name: Run the Data-preprocessing workflow in a jobless fashion
+          run: |
+            dbx launch Data-preprocessing --from-assets --trace 
+
+        - name: Workflow Model-Training deployment (assets only upload)
+          run: |
+            dbx deploy Model-Training --assets-only 
+
+        - name: Run the Model-Training workflow in a jobless fashion
+          run: |
+            dbx launch Model-Training --from-assets --trace 
+
+        - name: Workflow Model-Inferencing deployment (assets only upload)
+          run: |
+            dbx deploy Model-Inferencing --assets-only 
+
+        - name: Run the Model-Inferencing workflow in a jobless fashion
+          run: |
+            dbx launch Model-Inferencing --from-assets --trace 
+        
+        - name: Workflow Mlflow Webhook deployment (assets only upload)
+          run: |
+            dbx deploy Deployment-webhook --assets-only 
+
+        - name: Run the Mlflow Webhook workflow in a jobless fashion
+          run: |
+            dbx launch Deployment-webhook --from-assets --trace 
             
-          - name: Acceptance
-            run: |
-              # Add your acceptance testing commands here
-              echo "Acceptance testing..."
+          
   
   Production:
       if: always() && startsWith(github.ref, 'refs/heads/prod')

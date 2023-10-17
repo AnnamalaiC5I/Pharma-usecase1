@@ -1,5 +1,5 @@
 resource "databricks_job" "this" {
-  name = "Terraform job"
+  name = "Stag_terraform_job"
 
 #   job_cluster {
 #     job_cluster_key = "job_cluster_terra"
