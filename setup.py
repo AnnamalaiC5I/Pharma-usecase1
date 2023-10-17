@@ -15,7 +15,6 @@ PACKAGE_REQUIREMENTS = ["pyyaml"]
 LOCAL_REQUIREMENTS = [
     "pyspark==3.2.1",
     "boto3",
-    #"protobuf==3.20.1",
     "delta-spark==1.1.0",
     "scikit-learn==1.2.0",
     "databricks-sdk",
