@@ -11,7 +11,7 @@ from demo_project import __version__
 PACKAGE_REQUIREMENTS = ["pyyaml"]
 
 # packages for local developmen
-# please note that these packages are already available in DBR, there is no need to install them on DBR.
+# please note that these packages are already available in DBR, there is no need to install them on DBR
 LOCAL_REQUIREMENTS = [
     "pyspark==3.2.1",
     "boto3",
