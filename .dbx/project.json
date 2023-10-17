@@ -1,0 +1,15 @@
+{
+    "environments": {
+        "default": {
+            "profile": "Annamalai",
+            "storage_type": "mlflow",
+            "properties": {
+                "workspace_directory": "/Shared/dbx/Model-Training",
+                "artifact_location": "dbfs:/Shared/dbx/Model-Training"
+            }
+        }
+    },
+    "inplace_jinja_support": false,
+    "failsafe_cluster_reuse_with_assets": false,
+    "context_based_upload_for_execute": false
+}

@@ -1,0 +1,99 @@
+s3: 
+     bucket_name: "pharma-usecase1"
+     file_path: "CVD_cleaned.csv"
+     dev:
+       file_path: "dev/CVD_cleaned.csv"
+     stag:
+        file_path: "stag/CVD_cleaned.csv"
+     prod:
+        file_path: "prod/CVD_cleaned.csv"
+
+
+dbfs:
+     mount_name: "/mnt/mount_s3"
+     file_name:  '/mnt/mount_s3/CVD_cleaned.csv'
+
+preprocessed:
+     dev:
+           preprocessed_df_path: 'dev/preprocessed/preprocessed_df.csv' 
+           x_test: 'dev/preprocessed/x_test.csv'
+           y_test: 'dev/preprocessed/y_test.csv'
+           encoders_path: 'dev/preprocessed/encoders.pkl'
+     
+     stag:
+           preprocessed_df_path: 'stag/preprocessed/preprocessed_df.csv' 
+           x_test: 'stag/preprocessed/x_test.csv'
+           y_test: 'stag/preprocessed/y_test.csv'
+           encoders_path: 'stag/preprocessed/encoders.pkl'
+     
+     prod:
+           preprocessed_df_path: 'prod/preprocessed/preprocessed_df.csv' 
+           x_test: 'prod/preprocessed/x_test.csv'
+           y_test: 'prod/preprocessed/y_test.csv'
+           encoders_path: 'prod/preprocessed/encoders.pkl'
+
+results:
+        metrics_path: 'results/metrics_comparison.csv'
+
+features:
+         numerical_cols: ["Height_(cm)", "Weight_(kg)", "BMI", "Alcohol_Consumption",
+                          "Fruit_Consumption", "Green_Vegetables_Consumption", "FriedPotato_Consumption"]
+
+         categorical_cols: ["General_Health", "Checkup", "Exercise", "Heart_Disease", "Skin_Cancer",
+                    "Other_Cancer", "Depression", "Diabetes", "Arthritis", "Sex", "Age_Category", "Smoking_History"]
+
+         ordinal_cols: ['General_Health', 'Checkup', 'Age_Category']
+
+         onehot_cols:  ['Exercise', 'Heart_Disease', 'Skin_Cancer', 'Other_Cancer', 'Depression',
+                            'Diabetes', 'Arthritis', 'Sex', 'Smoking_History']
+
+         target: "Heart_Disease_Yes"
+
+
+Terraform:
+     json: "terraform.json"
+
+feature-store:
+          lookup_key: "PATIENT_ID"
+
+          dev:
+               table_name: "demo_table_dev"
+               online_table_name: "pharma_online_table_dev"
+          
+          stag:
+                table_name: "demo_table_stag"
+               online_table_name: "pharma_online_table_stag"
+          
+          prod:
+               table_name: "demo_table_prod"
+               online_table_name: "pharma_online_table_prod"
+
+ModelTraining:
+            test_split: 0.3
+            validation_split: 0.1
+
+LogisticReg:
+          C: 0.20
+          penalty: 'l2'
+          solver: 'newton-cg'
+          class_weight: 'balanced'
+
+
+Mlflow:
+     dev:
+        experiment_name:  "/Shared/dbx/pharma_dev"
+        run_name: "LogisticReg"
+
+     stag:
+        experiment_name:  "/Shared/dbx/pharma_stag"
+        run_name: "LogisticReg"
+ 
+
+     prod:
+        experiment_name:  "/Shared/dbx/pharma_prod"
+        run_name: "LogisticReg"
+
+
+
+
+ 

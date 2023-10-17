@@ -1,0 +1,75 @@
+# Custom section is used to store configurations that might be repetative.
+# Please read YAML documentation for details on how to use substitutions and anchors.
+custom:
+  basic-cluster-props: &basic-cluster-props
+    spark_version: "11.3.x-cpu-ml-scala2.12"
+
+  basic-static-cluster: &basic-static-cluster
+    new_cluster:
+      <<: *basic-cluster-props
+      num_workers: 1
+      node_type_id: "i3.xlarge"
+
+  my-cluster: &my-cluster
+    new_cluster:
+      <<: *basic-cluster-props
+      num_workers: 1
+      node_type_id: "m5d.large"
+      
+environments:
+  default:
+    workflows:
+      #######################################################################################
+      #   Example workflow for integration tests                                            #
+      #######################################################################################
+      
+      #######################################################################################
+      # this is an example job with single ETL task based on 2.1 API and wheel_task format #
+      ######################################################################################
+      
+
+      - name: "Data-preprocessing"
+        tasks:
+            - task_key: "main"
+              <<: *basic-static-cluster
+              python_wheel_task:
+                     package_name: "demo_project"
+                     entry_point: "data_prep"
+                     parameters: ["--conf-file", "file:fuse://conf/tasks/model.yml"]
+        #              secrets: [
+        #   {"scope": "secrets-scope", "key": "aws-access-key"},
+        #   {"scope": "secrets-scope", "key": "aws-secret-key"},
+        #   {"scope": "secrets-scope", "key": "databricks-host"},
+        #   {"scope": "secrets-scope", "key": "databricks-token"}
+        # ]
+
+      - name: "Model-Training"
+        tasks:
+            - task_key: "main"
+              <<: *my-cluster
+              python_wheel_task:
+                     package_name: "demo_project"
+                     entry_point: "model_train"
+                     parameters: ["--conf-file", "file:fuse://conf/tasks/model.yml"]     
+
+
+      - name: "Model-Inferencing"
+        tasks:
+            - task_key: "main"
+              <<: *basic-static-cluster
+              python_wheel_task:
+                     package_name: "demo_project"
+                     entry_point: "model_inference"
+                     parameters: ["--conf-file", "file:fuse://conf/tasks/model.yml"] 
+
+      - name: "Deployment-webhook"
+        tasks:
+            - task_key: "main"
+              <<: *basic-static-cluster
+              python_wheel_task:
+                     package_name: "demo_project"
+                     entry_point: "webhook"
+                     parameters: ["--conf-file", "file:fuse://conf/tasks/model.yml"]  
+
+      
+      
