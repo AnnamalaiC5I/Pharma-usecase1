@@ -20,7 +20,6 @@ LOCAL_REQUIREMENTS = [
     "scikit-learn==1.2.0",
     "databricks-sdk",
     "databricks-feature-store",
-    #"databricks-registry-webhooks",
     "evidently",
     "pandas==1.5.3",
     "mlflow",
