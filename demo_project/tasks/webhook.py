@@ -49,6 +49,7 @@ class Datadrift(Task):
         aws_secret_key = dbutils.secrets.get(scope="secrets-scope", key="aws-secret-key")
         db_host = dbutils.secrets.get(scope="secrets-scope", key="databricks-host")
         db_token = dbutils.secrets.get(scope="secrets-scope", key="databricks-token")
+        current_branch = dbutils.secrets.get(scope='secrets-scope',key='current_branch')
 
         s3 = boto3.resource("s3",aws_access_key_id=aws_access_key, 
                       aws_secret_access_key=aws_secret_key, 
@@ -67,7 +68,7 @@ class Datadrift(Task):
         print(json_content)
 
         lists = {
-            "model_name":"pharma_model",
+            "model_name":f"pharma_{current_branch}",
             "events": "MODEL_VERSION_TRANSITIONED_TO_PRODUCTION"
         }
         js_list_res = mlflow_call_endpoint('registry-webhooks/list', 'GET', json.dumps(lists))
@@ -85,7 +86,7 @@ class Datadrift(Task):
                                 "events": [
                                     "MODEL_VERSION_TRANSITIONED_TO_PRODUCTION"
                                 ],
-                                "model_name": "pharma_model",
+                                "model_name": f"pharma_{current_branch}",
                                 "description": "Webhook for Deployment Pipeline",
                                 "status": "ACTIVE"
                                 }

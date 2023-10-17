@@ -1,13 +1,14 @@
 name: Terraform Pipeline
 
 on:
-  push:
-    branches:
-      - stag
-      - prod
-  pull_request:
-    branches:
-      - '*'
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - stag
+  #     - prod
+  # pull_request:
+  #   branches:
+  #     - '*'
   
   
 
