@@ -22,8 +22,6 @@ from databricks.feature_store import feature_table, FeatureLookup
 import os
 import datetime
 from pyspark.dbutils import DBUtils
-import subprocess
-import branch_detection
 
 # Example usage:
 
