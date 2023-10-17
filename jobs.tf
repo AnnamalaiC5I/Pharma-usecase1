@@ -33,7 +33,7 @@ resource "databricks_job" "this" {
     }
 
     git_source {
-            url = "https://github.com/Annamalaisaravanan/terraform-db-actions.git"
+            url = "https://github.com/AnnamalaiC5I/Pharma-usecase1.git"
             provider = "gitHub"
             branch="main"
         }

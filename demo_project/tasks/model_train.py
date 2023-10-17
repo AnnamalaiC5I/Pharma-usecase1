@@ -69,7 +69,7 @@ class Trainmodel(Task):
                                 artifact_path="health_prediction",
                                 flavor=mlflow.sklearn,
                                 training_set=training_set,
-                                registered_model_name="pharma_model",
+                                registered_model_name=f"pharma_{current_branch}",
                                 )
     
 

@@ -55,13 +55,12 @@ Terraform:
 
 feature-store:
           lookup_key: "PATIENT_ID"
-
           dev:
                table_name: "demo_table_dev"
                online_table_name: "pharma_online_table_dev"
           
           stag:
-                table_name: "demo_table_stag"
+               table_name: "demo_table_stag"
                online_table_name: "pharma_online_table_stag"
           
           prod:
