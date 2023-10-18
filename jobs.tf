@@ -20,7 +20,7 @@ resource "databricks_job" "this" {
         }
 
         spark_python_task {
-            python_file = "deploy.py"
+            python_file = "demo_project/tasks/deploy.py"
             source = "GIT"
         }
 
