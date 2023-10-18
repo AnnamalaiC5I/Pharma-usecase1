@@ -1,14 +1,15 @@
 name: CI/CD 
 
 on:
-  push:
-    branches:
-      - dev
-      - stag
-      - prod
-  pull_request:
-    branches:
-      - '*'
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - dev
+  #     - stag
+  #     - prod
+  # pull_request:
+  #   branches:
+  #     - '*'
 
 jobs:
 
