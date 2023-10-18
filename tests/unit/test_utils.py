@@ -52,7 +52,7 @@ def test_push_df_to_s3():
 
          session = boto3.Session(aws_access_key_id=aws_access_key, aws_secret_access_key=aws_secret_key)
 
-            #Then use the session to get the resource
+         #Then use the session to get the resources
          s3_sess = session.resource('s3')
 
          my_bucket = s3_sess.Bucket(configure['Unittest']['s3']['bucket_name'])
