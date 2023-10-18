@@ -32,15 +32,19 @@ resource "databricks_job" "this" {
                     package = "mlflow"
                     repo="PyPI"
                 }
-                pypi {
+        }
+        library {
+               pypi {
                     package = "databricks-sdk"
                     repo="PyPI"
                 }
-                pypi {
+              }
+        library {
+               pypi {
                     package = "databricks"
                     repo="PyPI"
                 }
-        }
+              }
     }
 
     git_source {
