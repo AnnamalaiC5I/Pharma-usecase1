@@ -29,7 +29,8 @@ resource "databricks_job" "this" {
 
         library {
                 pypi {
-                    package = ["mlflow","databricks","databricks-sdk"]
+                    package = "mlflow"
+                    package = "databricks-sdk"
                     // repo can also be specified here
                 }
         }
