@@ -21,10 +21,41 @@ permissions:
   contents: read
 
 jobs:
+  
+  init:
+
+    runs-on: ubuntu-latest
+
+    outputs:
+      branch: ${{ steps.setvars.outputs.branch }}
+
+    steps:
+      - name: Set variables
+        run: |
+          if [[ "${{github.base_ref}}" == "dev" || "${{github.ref}}" == "refs/heads/dev" ]]; then
+            echo "STAGING=DEV" >> $GITHUB_ENV
+          fi
+
+          if [[ "${{github.base_ref}}" == "stag" || "${{github.ref}}" == "refs/heads/stag" ]]; then
+            echo "STAGING=STAGE" >> $GITHUB_ENV
+          fi
+
+          if [[ "${{github.base_ref}}" == "prod" || "${{github.ref}}" == "refs/heads/prod" ]]; then
+          echo "STAGING=PROD" >> $GITHUB_ENV
+          fi
+
+      - name: Read variables
+        run: echo "Environment:" ${{ env.STAGING }}
+
+      - name: Set token Name
+        id: setvars
+        run:  |
+            echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
 
   stag-terraform:
       if: startsWith(github.ref, 'refs/heads/stag')
       name: 'Stage-Terraform'
+      needs: init
       runs-on: ubuntu-latest
       
       
@@ -38,7 +69,8 @@ jobs:
         TF_VAR_git_token: ${{ secrets.GIT_TOKEN }}
         TF_VAR_aws_access_key: ${{ secrets.C5I_ACCESS_KEY }}
         TF_VAR_aws_secret_key: ${{ secrets.C5I_SECRET_KEY }}
-        TF_VAR_branch_name: ${{ github.event.inputs.branch }}
+        TF_VAR_branch_name: ${{ needs.init.outputs.branch }}
+
       
       steps:
       
@@ -64,6 +96,7 @@ jobs:
 
   prod-terraform:
       if: startsWith(github.ref, 'refs/heads/prod')
+      needs: init
       name: 'Prod-Terraform'
       runs-on: ubuntu-latest
       
@@ -78,7 +111,7 @@ jobs:
         TF_VAR_git_token: ${{ secrets.GIT_TOKEN }}
         TF_VAR_aws_access_key: ${{ secrets.C5I_ACCESS_KEY }}
         TF_VAR_aws_secret_key: ${{ secrets.C5I_SECRET_KEY }}
-        
+        TF_VAR_branch_name: ${{ needs.init.outputs.branch }}
       
       steps:
       
