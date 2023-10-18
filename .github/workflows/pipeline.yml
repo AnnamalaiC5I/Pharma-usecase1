@@ -99,7 +99,7 @@ jobs:
           run: |
             python -m pip install --upgrade pip
 
-        - name: Install dependencies and project in dev mode
+        - name: Install dependencies and project in stage mode
           run: |
             pip install -e ".[local,test]"
             pip install evidently
