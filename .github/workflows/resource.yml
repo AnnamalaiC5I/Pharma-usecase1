@@ -73,14 +73,18 @@ jobs:
         TF_VAR_git_token: ${{ secrets.GIT_TOKEN }}
         TF_VAR_aws_access_key: ${{ secrets.C5I_ACCESS_KEY }}
         TF_VAR_aws_secret_key: ${{ secrets.C5I_SECRET_KEY }}
-        TF_VAR_branch_name: ${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
+        TF_VAR_branch_name: ${{ GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/} }}
       
       steps:
       
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Terraform setup
+      - name: Set TF_VAR_branch_name
+        run: |
+          echo "TF_VAR_branch_name=${{ github.ref }}" >> $GITHUB_ENV
+
+      - name: Terraform setups
         uses: hashicorp/setup-terraform@v1
         
 
