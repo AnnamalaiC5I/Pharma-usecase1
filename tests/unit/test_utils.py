@@ -48,7 +48,7 @@ def test_preprocess(spark, tmp_path):
 
 def test_push_df_to_s3():
          
-         status = push_df_to_s3(input_data,configure['Unittest']['s3']['bucket_name'],configure['Unittest']['s3']['object_key'],s3)
+         status = push_df_to_s3(input_data,configure['Unittest']['s3']['object_key'],aws_access_key,aws_secret_key,configure)
 
          session = boto3.Session(aws_access_key_id=aws_access_key, aws_secret_access_key=aws_secret_key)
 
