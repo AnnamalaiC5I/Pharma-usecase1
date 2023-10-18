@@ -1,10 +1,11 @@
 name: CI/CD 
 
 on:
+  push:
+    branches:
+       - dev
   workflow_dispatch:
-  # push:
-  #   branches:
-  #     - dev
+ 
   #     - stag
   #     - prod
   # pull_request:
