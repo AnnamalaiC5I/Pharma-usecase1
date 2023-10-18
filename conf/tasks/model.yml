@@ -67,6 +67,10 @@ feature-store:
           prod:
                table_name: "demo_table_prod"
                online_table_name: "pharma_online_table_prod"
+          
+          unittest:
+              table_name: "demo_table_test"
+              online_table_name: "pharma_online_table_test"
 
 ModelTraining:
             test_split: 0.3

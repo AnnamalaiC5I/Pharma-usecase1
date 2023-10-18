@@ -27,7 +27,7 @@ def read_data_from_s3(s3,bucket_name, csv_file_key):
 
         return df_input  
 
-def preprocess(spark,configure,df_input):
+def preprocess(spark,configure,df_input,current_branch):
     numerical_cols = configure['features']['numerical_cols']
     
     categorical_cols = configure['features']['categorical_cols']
@@ -63,7 +63,7 @@ def preprocess(spark,configure,df_input):
     spark.sql(f"CREATE DATABASE IF NOT EXISTS {configure['feature-store']['DB']}")
     print('pharma db created')
     # Create a unique table name for each run. This prevents errors if you run the notebook multiple times.
-    table_name = configure['feature-store']['table_name']
+    table_name = configure['feature-store'][current_branch]['table_name']
     print(table_name)
 
     df_feature = df_input.drop(configure['features']['target'],axis=1)

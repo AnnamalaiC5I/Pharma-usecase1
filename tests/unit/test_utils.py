@@ -28,7 +28,7 @@ def test_preprocess(spark, tmp_path):
     
 
     # Call the preprocess function
-    df_feature_pandas, df_input_pandas = preprocess(spark, configure, input_data)
+    df_feature_pandas, df_input_pandas = preprocess(spark, configure, input_data,"unittest")
 
     if 'Unnamed: 0' in df_input_pandas.columns:
          df_input_pandas = df_input_pandas.drop('Unnamed: 0', axis=1)

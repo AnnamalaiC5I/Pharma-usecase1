@@ -54,7 +54,7 @@ class DataPrep(Task):
                 df_input = df_input.reset_index()
         
 
-                df_feature, df_input = preprocess(spark,self.conf,df_input)   
+                df_feature, df_input = preprocess(spark,self.conf,df_input,current_branch)   
 
                 df_spark = spark.createDataFrame(df_feature)
 
