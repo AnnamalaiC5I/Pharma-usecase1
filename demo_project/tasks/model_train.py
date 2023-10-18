@@ -3,18 +3,12 @@ import pandas as pd
 from demo_project.common import Task
 
 from sklearn.model_selection import train_test_split
-
-import xgboost as xgb
-from sklearn.metrics import accuracy_score, f1_score
+from sklearn.metrics import  f1_score
 import warnings
-import os
 import boto3
-import pickle
-
-
-
+from demo_project.tasks.utils import push_df_to_s3
 from io import BytesIO
-from urllib.parse import urlparse
+
 import mlflow
 
 from mlflow.tracking.client import MlflowClient
@@ -28,7 +22,8 @@ from databricks import feature_store
 from pyspark.dbutils import DBUtils
 
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import f1_score, r2_score, auc, roc_curve
+from sklearn.metrics import f1_score, auc, roc_curve
+from demo_project.tasks.utils import push_df_to_s3, read_data_from_s3
 
 warnings.filterwarnings('ignore')
 
@@ -73,20 +68,6 @@ class Trainmodel(Task):
                                 )
     
 
-    def push_df_to_s3(self,df,s3_object_key,access_key,secret_key):
-            csv_buffer = BytesIO()
-            df.to_csv(csv_buffer, index=False)
-            csv_content = csv_buffer.getvalue()
-
-            s3 = boto3.resource("s3",aws_access_key_id=access_key, 
-                      aws_secret_access_key=secret_key, 
-                      region_name='ap-south-1')
-
-            
-            s3.Object(self.conf['s3']['bucket_name'], s3_object_key).put(Body=csv_content)
-
-            return {"df_push_status": 'success'}
-
     def load_data(self, table_name, lookup_key,target, inference_data_df):
                     # In the FeatureLookup, if you do not provide the `feature_names` parameter, all features except primary keys are returned
                     model_feature_lookups = [FeatureLookup(table_name=table_name, lookup_key=lookup_key)]
@@ -105,11 +86,8 @@ class Trainmodel(Task):
 
     def _train_model(self):
                 
-                
-
                 aws_access_key = dbutils.secrets.get(scope="secrets-scope", key="aws-access-key")
                 aws_secret_key = dbutils.secrets.get(scope="secrets-scope", key="aws-secret-key")
-                
                 
                 s3 = boto3.resource("s3",aws_access_key_id=aws_access_key, 
                       aws_secret_access_key=aws_secret_key, 
@@ -118,14 +96,10 @@ class Trainmodel(Task):
                 bucket_name =  self.conf['s3']['bucket_name']
                 csv_file_key = self.conf['preprocessed'][current_branch]['preprocessed_df_path']
 
-                
-                s3_object = s3.Object(bucket_name, csv_file_key)
-                
-                csv_content = s3_object.get()['Body'].read()
+                df_input = read_data_from_s3(s3,bucket_name, csv_file_key)
 
-                df_input = pd.read_csv(BytesIO(csv_content))
-
-                
+                print("Model train Input")
+                print(df_input.head(3))
 
                 df_input_spark = spark.createDataFrame(df_input)
 
@@ -135,12 +109,11 @@ class Trainmodel(Task):
         
                 client = MlflowClient()
  
-
                 self.train_model(X_train, X_val, y_train, y_val, training_set, fs)
 
-                self.push_df_to_s3(X_test,self.conf['preprocessed'][current_branch]['x_test'],aws_access_key,aws_secret_key)
+                push_df_to_s3(X_test,self.conf['preprocessed'][current_branch]['x_test'],aws_access_key,aws_secret_key,self.conf)
 
-                self.push_df_to_s3(y_test,self.conf['preprocessed'][current_branch]['y_test'],aws_access_key,aws_secret_key)
+                push_df_to_s3(y_test,self.conf['preprocessed'][current_branch]['y_test'],aws_access_key,aws_secret_key,self.conf)
 
 
                 print("Model training is done")

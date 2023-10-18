@@ -92,6 +92,13 @@ Mlflow:
         experiment_name:  "/Shared/dbx/pharma_prod"
         run_name: "LogisticReg"
 
+Unittest:
+        s3:
+            bucket_name:  "pharma-usecase1"
+            object_key: 'unittest/sampledf.csv'
+
+        run_name: 'sample'
+
 
 
 

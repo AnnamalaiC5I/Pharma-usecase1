@@ -7,7 +7,7 @@ from io import BytesIO
 from sklearn.metrics import confusion_matrix, accuracy_score
 import numpy as np
 from databricks import feature_store
-
+from demo_project.tasks.utils import push_df_to_s3, read_data_from_s3
 from pyspark.dbutils import DBUtils
 
 
@@ -38,23 +38,18 @@ class ModelInference(Task):
 
               y_test_key = self.conf['preprocessed'][current_branch]['y_test']
 
-                
-              s3_object = s3.Object(bucket_name, x_test_key)
-                
-              csv_content = s3_object.get()['Body'].read()
+              x_test = read_data_from_s3(s3,bucket_name,x_test_key)
 
-              x_test = pd.read_csv(BytesIO(csv_content))
+              print("X test")
+              print(x_test)
 
-              s3_object1 = s3.Object(bucket_name, y_test_key)
-                
-              csv_content1= s3_object1.get()['Body'].read()
+              y_test = read_data_from_s3(s3,bucket_name,y_test_key)
 
-              y_test = pd.read_csv(BytesIO(csv_content1))
+              print("Y test")
+              print(y_test)
 
               spark = SparkSession.builder.appName("CSV Loading Example").getOrCreate()
 
-     
-             
               rows = x_test.count()[0]
               random_patient_ids = np.random.randint(10000, 99999, size=rows)
 
@@ -78,18 +73,6 @@ class ModelInference(Task):
 
               print(accuracy_score(output_df['prediction'],output_df['actual'])*100)
 
-            #   job_spec = JobSpec(
-            #         job_id=self.conf['deployment-pipeline']['job_id'],
-            #         workspace_url=  db_host, #"https://my-databricks-workspace.com",
-            #         access_token=db_token
-            #         )
-            #   job_webhook = RegistryWebhooksClient().create_webhook(
-            #         model_name="pharma_model",
-            #         events=["MODEL_VERSION_TRANSITIONED_TO_PRODUCTION"],
-            #         job_spec=job_spec,
-            #         description="Job webhook trigger",
-            #         )
-            #   print(job_webhook)
 
     def launch(self):
          

@@ -36,6 +36,8 @@ class DBUtilsFixture:
 
     def __init__(self):
         self.fs = self
+        self.secrets1 = {}
+        self.config = {}
 
     def cp(self, src: str, dest: str, recurse: bool = False):
         copy_func = shutil.copytree if recurse else shutil.copy
@@ -67,6 +69,43 @@ class DBUtilsFixture:
         deletion_func = shutil.rmtree if recurse else os.remove
         deletion_func(path)
 
+    # My functions 
+    def store_secret(self, scope: str, key: str, value: str):
+        """
+        Store a secret within a specific scope.
+        """
+        # Check if the scope already exists in secrets, if not, create it
+        if scope not in self.secrets1:
+            self.secrets1[scope] = {}
+
+        # Check if the key already exists in the scope, if not, create it as a list
+        if key not in self.secrets1[scope]:
+            self.secrets1[scope][key] = []
+            self.secrets1[scope][key].append(value)
+        # Append the value to the list of secrets for the key in the scope
+        
+
+    def secrets_get(self, scope, key):
+        """
+        Retrieve a secret from a specific scope.
+        """
+        if scope in self.secrets1 and key in self.secrets1[scope]:
+            return self.secrets1[scope][key]
+        return None
+
+    @property
+    def secrets(self):
+        """
+        Return a SecretsGetter instance.
+        """
+        return SecretsGetter(self)
+
+class SecretsGetter:
+    def __init__(self, db_utils_fixture):
+        self.db_utils_fixture = db_utils_fixture
+
+    def get(self, scope, key):
+        return self.db_utils_fixture.secrets_get(scope, key)
 
 @pytest.fixture(scope="session")
 def spark() -> SparkSession:
@@ -127,11 +166,11 @@ def mlflow_local():
 def dbutils_fixture() -> Iterator[None]:
     """
     This fixture patches the `get_dbutils` function.
-    Please note that patch is applied on a string name of the function.
+    Please note that patch is applied on a strling name of the function.
     If you change the name or location of it, patching won't work.
     :return:
     """
     logging.info("Patching the DBUtils object")
-    with patch("demo_project.common.get_dbutils", lambda _: DBUtilsFixture()):
+    with patch("demo_one.common.get_dbutils", lambda _: DBUtilsFixture()):
         yield
     logging.info("Test session finished, patching completed")

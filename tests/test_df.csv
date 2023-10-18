@@ -1,0 +1,16 @@
+,General_Health,Checkup,Exercise,Heart_Disease,Skin_Cancer,Other_Cancer,Depression,Diabetes,Arthritis,Sex,Age_Category,Height_(cm),Weight_(kg),BMI,Smoking_History,Alcohol_Consumption,Fruit_Consumption,Green_Vegetables_Consumption,FriedPotato_Consumption
+308839,Good,Within the past year,Yes,No,No,No,No,No,No,Female,50-54,168.0,113.4,40.35,No,0.0,30.0,4.0,8.0
+308840,Very Good,Within the past year,Yes,Yes,No,No,Yes,Yes,No,Male,55-59,175.0,97.52,31.75,No,5.0,8.0,4.0,12.0
+308841,Excellent,Within the past 5 years,No,No,No,No,No,No,No,Male,35-39,188.0,131.54,37.23,No,12.0,12.0,12.0,4.0
+308842,Good,Within the past year,Yes,No,Yes,Yes,No,No,No,Female,45-49,163.0,74.39,28.15,Yes,30.0,0.0,30.0,0.0
+308843,Excellent,Within the past 5 years,Yes,No,No,No,No,No,No,Male,50-54,175.0,61.23,19.94,No,0.0,30.0,0.0,0.0
+308844,Good,Within the past year,Yes,No,No,No,No,No,No,Male,60-64,163.0,65.32,24.72,No,8.0,4.0,4.0,2.0
+308845,Good,Within the past year,Yes,No,No,No,No,No,No,Male,55-59,170.0,104.33,36.02,No,4.0,12.0,20.0,4.0
+308846,Very Good,Within the past year,No,No,No,No,No,Yes,Yes,Male,65-69,168.0,92.99,33.09,No,1.0,12.0,8.0,1.0
+308847,Very Good,5 or more years ago,No,No,No,No,No,No,No,Male,40-44,163.0,65.77,24.89,No,0.0,0.0,0.0,0.0
+308848,Good,Within the past 5 years,Yes,No,No,No,No,No,No,Male,55-59,168.0,58.97,20.98,No,0.0,16.0,12.0,0.0
+308849,Very Good,Within the past year,Yes,No,No,No,No,No,No,Male,25-29,168.0,81.65,29.05,No,4.0,30.0,8.0,0.0
+308850,Fair,Within the past 5 years,Yes,No,No,No,No,Yes,No,Male,65-69,180.0,69.85,21.48,No,8.0,15.0,60.0,4.0
+308851,Very Good,5 or more years ago,Yes,No,No,No,Yes,"Yes, but female told only during pregnancy",No,Female,30-34,157.0,61.23,24.69,Yes,4.0,40.0,8.0,4.0
+308852,Very Good,Within the past year,Yes,No,No,No,No,No,No,Male,65-69,183.0,79.38,23.73,No,3.0,30.0,12.0,0.0
+308853,Excellent,Within the past year,Yes,No,No,No,No,No,No,Female,45-49,160.0,81.19,31.71,No,1.0,5.0,12.0,1.0

@@ -41,6 +41,10 @@ jobs:
             pip install -e ".[local,test]"
             pip install evidently
 
+        - name: Unit Testing
+          run: |
+             python -m pytest tests/unit --cov
+
         - name: Scope Creation Check
           run: |
             python scope-creation.py
