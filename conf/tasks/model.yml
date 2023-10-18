@@ -55,6 +55,7 @@ Terraform:
 
 feature-store:
           lookup_key: "PATIENT_ID"
+          DB: 'pharma'
           dev:
                table_name: "demo_table_dev"
                online_table_name: "pharma_online_table_dev"
