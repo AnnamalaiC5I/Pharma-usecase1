@@ -2,11 +2,7 @@ name: Terraform Pipeline
 
 on:
   workflow_dispatch:
-        inputs:
-            branch:
-              description: 'use workflow from'
-              required: true
-
+  
   # push:
   #   branches:
   #     - stag
