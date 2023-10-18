@@ -61,7 +61,7 @@ class DataPrep(Task):
                 fs = feature_store.FeatureStoreClient()
 
                 fs.create_table(
-                        name=self.conf['feature-store']['table_name'],
+                        name=self.conf['feature-store'][current_branch]['table_name'],
                         primary_keys=[self.conf['feature-store']['lookup_key']],
                         df=df_spark,
                         schema=df_spark.schema,
@@ -80,7 +80,7 @@ class DataPrep(Task):
                         table_name = self.conf['feature-store'][current_branch]['online_table_name']
                         )
                 
-                fs.publish_table(self.conf['feature-store']['table_name'], online_store_spec)
+                fs.publish_table(self.conf['feature-store'][current_branch]['table_name'], online_store_spec)
 
                    
             
