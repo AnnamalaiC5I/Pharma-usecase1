@@ -33,6 +33,7 @@ jobs:
         TF_VAR_git_token: ${{ secrets.GIT_TOKEN }}
         TF_VAR_aws_access_key: ${{ secrets.C5I_ACCESS_KEY }}
         TF_VAR_aws_secret_key: ${{ secrets.C5I_SECRET_KEY }}
+        TF_VAR_branch_name: ${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
       
       steps:
       
@@ -72,6 +73,7 @@ jobs:
         TF_VAR_git_token: ${{ secrets.GIT_TOKEN }}
         TF_VAR_aws_access_key: ${{ secrets.C5I_ACCESS_KEY }}
         TF_VAR_aws_secret_key: ${{ secrets.C5I_SECRET_KEY }}
+        TF_VAR_branch_name: ${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
       
       steps:
       

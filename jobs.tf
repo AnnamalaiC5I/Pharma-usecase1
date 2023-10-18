@@ -1,3 +1,6 @@
+variable "branch_name"{
+}
+
 resource "databricks_job" "this" {
   name = "Stag_terraform_job"
 
@@ -35,11 +38,12 @@ resource "databricks_job" "this" {
     git_source {
             url = "https://github.com/AnnamalaiC5I/Pharma-usecase1.git"
             provider = "gitHub"
-            branch="stage"
+            branch="${var.branch_name}"
         }
 
 
 }
+
 
 output "job_id" {
   value = databricks_job.this.id
