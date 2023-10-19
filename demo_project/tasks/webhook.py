@@ -57,8 +57,9 @@ class Datadrift(Task):
               
         bucket_name =  self.conf['s3']['bucket_name']
         json_key = self.conf['Terraform']['json']
-       
-        s3_object = s3.Object(bucket_name, json_key)
+        
+        key = current_branch+'_'+json_key
+        s3_object = s3.Object(bucket_name, key)
                 
         json_content = s3_object.get()['Body'].read().decode('utf-8')
         json_data = json.loads(json_content)
