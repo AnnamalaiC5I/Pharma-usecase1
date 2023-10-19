@@ -2,7 +2,7 @@ variable "branch_name"{
 }
 
 resource "databricks_job" "this" {
-  name = "Stag_terraform_job"
+  name = "${var.branch_name}_terraform_job"
 
 #   job_cluster {
 #     job_cluster_key = "job_cluster_terra"
@@ -65,7 +65,7 @@ output "job_id" {
 
 resource "aws_s3_object" "object" {
   bucket  = "pharma-usecase1"
-  key     = "terraform.json"
+  key     = "${var.branch_name}_terraform.json"
   content = jsonencode({"id":databricks_job.this.id})
 
   depends_on = [databricks_job.this]
